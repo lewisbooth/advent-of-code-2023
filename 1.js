@@ -1,31 +1,27 @@
 const fs = require('fs')
-
 const stageOneInput = fs.readFileSync('1', 'utf-8').split('\n')
+
+
+// STAGE 1
 
 const stageOne = input =>
   input.map(line => line
-    .split('')
-    .filter(Number))
+    .split('').filter(Number))
   .reduce((total, line) => 
     total + Number(line[0] + line.pop()), 0)
 
 console.log('Stage one: ' + stageOne(stageOneInput))
 
+
+// STAGE 2
+
+const NUMS = ['ne','wo','hree','our','ive','ix','even','ight','ine']
+const cast = num => Number(num) || NUMS.indexOf(num) + 1
+
 const stageTwo = input =>
-  input.map(line => line
-    .replace(/one/g, 'on1e')
-    .replace(/two/g, 'tw2o')
-    .replace(/three/g, 'thre3e')
-    .replace(/four/g, 'fou4r')
-    .replace(/five/g, 'fiv5e')
-    .replace(/six/g, 'si6x')
-    .replace(/seven/g, 'seve7n')
-    .replace(/eight/g, 'eigh8t')
-    .replace(/nine/g, 'nin9e'))
-  .map(line => line
-    .split('')
-    .filter(Number))
-  .reduce((total, line) => 
-    total + Number(line[0] + line.pop()), 0)
+  input.reduce((total, line) => {
+    const nums = line.match(/\d|ne|wo|hree|our|ive|ix|even|ight|ine/g)
+    return total += Number(`${cast(nums[0])}${cast(nums.pop())}`)
+  }, 0)
 
 console.log('Stage two: ' + stageTwo(stageOneInput))
